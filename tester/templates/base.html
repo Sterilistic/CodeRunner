@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="fr">
+<head>
+    <title>WebDevTools</title>
+    <meta charset="utf-8" />
+	<link rel="stylesheet" href="{% static "devc.css" %}" />
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+      <!-- Custom styles for this template -->
+      
+      <link href="{% static "css/metisMenu.min.css"%}" rel="stylesheet">
+      <!-- Custom CSS -->
+      <link href="{% static "css/sb-admin.css"%}" rel="stylesheet">
+      
+      <!-- Custom Fonts -->
+      <link href="{% static "css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="wrapper">
+       <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #ddd;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">FFI Codeschool</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <ul class="nav navbar-nav navbar-right navbar-user">
+                    
+                </ul>
+                <!-- /.dropdown -->
+                            </ul>
+            <!-- /.navbar-top-links -->
+
+        </nav>
+<div id="content" style="margin-top: 20px;" class="container">
+    <!-- ************  CODING ZONE  ************ -->
+    <div id="code">
+        <form method="post" action="">
+			{% csrf_token %}
+            <div id="title-code" class="head-section">
+              Enter your code here
+            </div>
+            <input id="launch-button" class="head-section" type="submit" value="Run" />
+            {% block code %}
+            {% endblock %}
+        </form>
+    </div>
+    
+    <!-- ************ RUNNING ZONE RESULTS ************ -->
+    
+    <div id="result">
+        <div id="title-result" class="head-section">
+            Output result
+        </div>
+        {% block run %}
+        {% endblock %}
+    </div>
+    
+    <!-- ************ COMPILATION RESULTS ZONE ************ -->
+    
+    <div id="compile">
+        <div id="title-compile" class="head-section">
+            Compilation / Output
+        </div>
+        {% block comp %}
+        {% endblock %}
+    </div>
+</div>
+</div>
+<script src="{% static "ace/ace.js"%}"></script>
+<script>
+    // The Ace editor needs divs instead of textareas
+    // So we hide the textarea and show a div instead
+    var editorElement = document.getElementById("text-code");
+    editorElement.classList.add("hidden");
+    document.getElementById("text-code-ace").classList.remove("hidden");
+
+    // Set up the editor
+    var editor = ace.edit("text-code-ace");
+    editor.setTheme("ace/theme/tomorrow");
+    var language = ("{{ target }}" === "runpy") ? "python" : "c_cpp";
+    editor.getSession().setMode("ace/mode/" + language);
+
+    // Make sure we copy the content of the editor to the textarea before posting
+    // its content to the server
+    document.getElementById("launch-button").addEventListener("click", function () {
+        editorElement.innerHTML = editor.getValue();
+    });
+</script>
+</body>
+</html>

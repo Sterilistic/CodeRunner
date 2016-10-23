@@ -1,26 +1,24 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="fr">
 <head>
     <title>WebDevTools</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="/static/devc.css">
+	<link rel="stylesheet" href="{% static "devc.css" %}" />
 </head>
 <body id="index" class="home">
 <div id="links">
-<ul>
-<li><a href="/">C Code</a></li>
-<li><a href="/cpp">C++ Code</a></li>
-<li><a href="/py">Python Code</a></li>
-</ul>
+
 </div>
 <div id="content">
     <!-- ************  CODING ZONE  ************ -->
     <div id="code">
-        <form method="post" action="{{ url_for(target) }}">
+        <form method="post" action="">
+			{% csrf_token %}
             <div id="title-code" class="head-section">
-              Source Code
+              Enter your code here
             </div>
-            <input id="launch-button" class="head-section" type="submit" value="Launch" />
+            <input id="launch-button" class="head-section" type="submit" value="Run" />
             {% block code %}
             {% endblock %}
         </form>
@@ -46,7 +44,7 @@
         {% endblock %}
     </div>
 </div>
-<script src="{{ url_for('static', filename='ace/ace.js') }}"></script>
+<script src="{% static "ace/ace.js"%}"></script>
 <script>
     // The Ace editor needs divs instead of textareas
     // So we hide the textarea and show a div instead
